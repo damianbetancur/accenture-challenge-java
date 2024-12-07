@@ -1,0 +1,48 @@
+{
+  "normalOrderJsonMap": {
+    "id_order": "123",
+    "customer_id": "456",
+    "order_amount": 100.50,
+    "order_items": [
+      {
+        "productId": "1",
+        "quantity": 2,
+        "price": 25.00
+      },
+      {
+        "productId": "2",
+        "quantity": 1,
+        "price": 50.50
+      }
+    ]
+  },
+  "invalidOrderEmptyItemsJsonMap": {
+    "id_order": "123",
+    "customer_id": "456",
+    "order_amount": 100.50,
+    "order_items": []
+  },
+  "invalidIdOrderEmptyJsonMap": {
+    "id_order": "",
+    "customer_id": "456",
+    "order_amount": 100.50,
+    "order_items": [
+      {
+        "productId": "1",
+        "quantity": 2,
+        "price": 25.00
+      },
+      {
+        "productId": "2",
+        "quantity": 1,
+        "price": 50.50
+      }
+    ]
+  },
+  "invalidCustomerIdEmptyJsonMap": {
+    "id_order": "123",
+    "customer_id": "",
+    "order_amount": 100.50,
+    "order_items": []
+  }
+}
