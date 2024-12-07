@@ -20,7 +20,7 @@ class AccentureChallengeJavaApplicationTest {
 		assertThat(appVersion).isNotNull();
 		assertThat(appName).isNotNull();
 
-		assertThat(appVersion).isEqualTo("0.0.1-SNAPSHOT");
+		assertThat(appVersion).isEqualTo("0.0.2-SNAPSHOT");
 		assertThat(appName).isEqualTo("accenture-challenge-java");
 	}
 }
