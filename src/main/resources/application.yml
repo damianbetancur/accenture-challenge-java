@@ -6,9 +6,9 @@ spring:
   output:
     ansi:
       enabled: always # permite ver el log como colores
-  jackson:
-    date-format: yyyy-MM-dd
-    default-property-inclusion: non_null
+  mvc:
+    converters:
+      preferred-json-mapper: jackson
 
 server:
   compression:
