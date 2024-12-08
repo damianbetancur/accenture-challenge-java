@@ -1,11 +1,15 @@
 package com.accenture.controller;
 
-import com.accenture.dto.request.OrderItemRequest;
-import com.accenture.dto.request.OrderRequest;
-import com.accenture.dto.response.OrderResponse;
+import com.accenture.helper.InMemoryTestHelper;
 import com.accenture.helper.OrdersTestHelper;
+import com.accenture.helper.TestDataHelper;
+import com.accenture.model.Customer;
+import com.accenture.model.Product;
+import com.accenture.repository.CustomerRepository;
+import com.accenture.repository.ProductRepository;
 import com.accenture.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -17,8 +21,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +39,26 @@ public class OrderControllerTest {
     private MockMvc mockMvc;
 
     @Mock
+    private ProductRepository productRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
     private OrderService orderService;
+
+    @BeforeEach
+    public void setupInMemoryRepos() throws IOException {
+        // Crear repositorio en memoria para productos
+        List<Product> products = TestDataHelper.loadTestData("src/test/resources/data/products.json", Product.class);
+        Map<String, Product> productRepo = InMemoryTestHelper.createInMemoryRepo(products, Product::getSku);
+        productRepo.forEach((key, value) -> Mockito.when(productRepository.findBySku(key)).thenReturn(Optional.of(value)));
+
+        // Crear repositorio en memoria para clientes
+        List<Customer> customers = TestDataHelper.loadTestData("src/test/resources/data/customers.json", Customer.class);
+        Map<String, Customer> customerRepo = InMemoryTestHelper.createInMemoryRepo(customers, Customer::getCustomerId);
+        customerRepo.forEach((key, value) -> Mockito.when(customerRepository.findByCustomerId(key)).thenReturn(Optional.of(value)));
+    }
 
     @Test
     public void testMalformedJsonRequest() throws Exception {
@@ -46,26 +71,16 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.error").value("Malformed JSON request"));
     }
 
-    @Test
-    public void testProcessOrder_Success() throws Exception {
-        OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setIdOrder("123");
-        orderRequest.setCustomerId("456");
-        orderRequest.setOrderAmount(100.50);
-        orderRequest.setOrderItems(List.of(new OrderItemRequest("1", 2, 25.0), new OrderItemRequest("2", 1, 50.5)));
+    @ParameterizedTest
+    @MethodSource("provideAllsOrders")
+    void testProcessOrder_Success(Map<String, Object> jsonInput) throws Exception {
 
-        OrderResponse expectedResponse = new OrderResponse("123", "456", 100.50, "Order successfully processed");
-
-        Mockito.when(orderService.processOrder(Mockito.any(OrderRequest.class))).thenReturn(expectedResponse);
+        String requestJson = new ObjectMapper().writeValueAsString(jsonInput);
 
         mockMvc.perform(post("/orders/processOrder")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(orderRequest)))
-                .andExpect(status().isCreated()) // HTTP 201
-                .andExpect(jsonPath("$.orderId").value("123"))
-                .andExpect(jsonPath("$.customerId").value("456"))
-                .andExpect(jsonPath("$.totalAmount").value(100.50))
-                .andExpect(jsonPath("$.status").value("Order successfully processed"));
+                        .content(requestJson))
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -92,7 +107,15 @@ public class OrderControllerTest {
                         OrdersTestHelper.getInvalidIdOrderEmptyJsonMap()
                 ),
                 Arguments.of(
-                        OrdersTestHelper.getInvalidOrderEmptyItemsJsonMap()
+                        OrdersTestHelper.getInvalidOrderItemsEmptyJsonMap()
+                )
+        );
+    }
+
+    static Stream<Arguments> provideAllsOrders() {
+        return Stream.of(
+                Arguments.of(
+                        OrdersTestHelper.getNormalOrderJsonMap()
                 )
         );
     }

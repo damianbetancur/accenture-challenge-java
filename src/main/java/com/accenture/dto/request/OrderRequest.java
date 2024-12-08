@@ -30,6 +30,6 @@ public class OrderRequest {
     private double orderAmount;
 
     @NotEmpty(message = "Order must contain at least one item")
-    @JsonProperty("order_items")
-    private List<@Valid OrderItemRequest> orderItems;
+    @JsonProperty("order_lines")
+    private List<@Valid OrderLineRequest> orderLineRequestList;
 }

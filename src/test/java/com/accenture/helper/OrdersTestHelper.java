@@ -27,8 +27,8 @@ public class OrdersTestHelper {
         return testData.getOrDefault("normalOrderJsonMap", Map.of());
     }
 
-    public static Map<String, Object> getInvalidOrderEmptyItemsJsonMap() {
-        return testData.getOrDefault("invalidOrderEmptyItemsJsonMap", Map.of());
+    public static Map<String, Object> getInvalidOrderItemsEmptyJsonMap() {
+        return testData.getOrDefault("invalidOrderItemsEmptyJsonMap", Map.of());
     }
 
     public static Map<String, Object> getInvalidIdOrderEmptyJsonMap() {
