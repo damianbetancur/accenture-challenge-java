@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.accenture</groupId>
     <artifactId>concurrent-order-processor</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>accenture-challenge-java</name>
     <description>accenture-challenge-java</description>
 
