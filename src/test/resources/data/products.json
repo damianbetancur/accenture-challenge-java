@@ -1,0 +1,12 @@
+[
+  {
+    "sku": "P001",
+    "name": "Laptop",
+    "price": 1200.50
+  },
+  {
+    "sku": "P002",
+    "name": "Smartphone",
+    "price": 800.75
+  }
+]

@@ -1,6 +1,5 @@
 package com.accenture.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +8,10 @@ import jakarta.validation.constraints.Positive;
 
 @Data
 @AllArgsConstructor
-public class OrderItemRequest {
+public class OrderLineRequest {
 
-    @NotBlank(message = "Product ID is required")
-    @JsonProperty("product_id")
-    private String productId;
+    @NotBlank(message = "SKU is required")
+    private String sku;
 
     @Positive(message = "Quantity must be greater than zero")
     private int quantity;
