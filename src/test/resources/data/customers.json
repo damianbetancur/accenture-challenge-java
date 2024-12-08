@@ -1,0 +1,16 @@
+[
+  {
+    "customer_id": "C001",
+    "name": "Damian Ariel Betancur",
+    "email": "betancurdamian@gmail.com",
+    "phone": "+3764176691",
+    "address": "calle 151"
+  },
+  {
+    "customer_id": "C002",
+    "name": "Lidia Angelica Zacarias",
+    "email": "lidia.zacarias@gmail.com",
+    "phone": "+0987654321",
+    "address": "calle 154"
+  }
+]

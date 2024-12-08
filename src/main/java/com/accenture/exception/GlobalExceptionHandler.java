@@ -49,4 +49,10 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
+
+    @ExceptionHandler(OrderAlreadyProcessedException.class)
+    public ResponseEntity<ApiError> handleOrderAlreadyProcessedException(OrderAlreadyProcessedException ex) {
+        ApiError error = new ApiError(HttpStatus.CONFLICT.value(), "Order Already Processed", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
 }
