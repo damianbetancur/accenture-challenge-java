@@ -23,3 +23,13 @@ executor:
   maxPoolSize: 100 #Tamaño máximo del grupo de hilos
   keepAliveTime: 60
   queueCapacity: 1000 #Capacidad de la cola
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
