@@ -23,13 +23,13 @@ public class ThreadPoolConfig {
     @Value("${executor.queueCapacity:100}")
     private int queueCapacity;
 
-    @Bean
+    @Bean(name = "taskExecutor")
     public ThreadPoolExecutor threadPoolExecutor() {
         return new ThreadPoolExecutor(
-                corePoolSize,
-                maxPoolSize,
-                keepAliveTime,
-                TimeUnit.SECONDS,
+                corePoolSize, // Núcleo inicial de hilos
+                maxPoolSize, // Máximo de hilos permitidos
+                keepAliveTime, // Tiempo de vida de hilos inactivos
+                TimeUnit.SECONDS, // unidad de medida
                 new LinkedBlockingQueue<>(queueCapacity) // Asignar una cola válida con capacidad
         );
     }

@@ -3,6 +3,10 @@ app:
   version: "@project.version@"
 
 spring:
+  application:
+    name: accenture-challenge-java
+    profiles:
+      active: prod
   output:
     ansi:
       enabled: always # permite ver el log como colores
@@ -24,12 +28,3 @@ executor:
   keepAliveTime: 60
   queueCapacity: 1000 #Capacidad de la cola
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
-  prometheus:
-    metrics:
-      export:
-        enabled: true

@@ -1,0 +1,7 @@
+ ***Pre requisito***
+ -- Docker instalado
+
+ ** Ejecucion **
+ En la ubicacion donde se encuentre el docker-compose abrir terminal y ejecutar
+
+ docker-compose -f docker-local-JMeter-Grafana-Prometheus.yaml up -d
