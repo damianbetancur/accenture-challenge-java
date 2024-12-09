@@ -1,10 +1,12 @@
 package com.accenture.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+@Slf4j
 @Component
 public class ThreadPoolMetrics {
 
@@ -16,9 +18,9 @@ public class ThreadPoolMetrics {
 
     @Scheduled(fixedRate = 5000) // Cada 5 segundos
     public void logThreadPoolStats() {
-        System.out.println("Active Threads: " + threadPoolExecutor.getActiveCount());
-        System.out.println("Completed Tasks: " + threadPoolExecutor.getCompletedTaskCount());
-        System.out.println("Task Queue Size: " + threadPoolExecutor.getQueue().size());
+        log.info("Active Threads: {}", threadPoolExecutor.getActiveCount());
+        log.info("Completed Tasks: {}", threadPoolExecutor.getCompletedTaskCount());
+        log.info("Task Queue Size: {}", threadPoolExecutor.getQueue().size());
     }
 }
 
