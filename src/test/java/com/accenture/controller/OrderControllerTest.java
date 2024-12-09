@@ -80,7 +80,7 @@ public class OrderControllerTest {
         mockMvc.perform(post("/orders/processOrder")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test

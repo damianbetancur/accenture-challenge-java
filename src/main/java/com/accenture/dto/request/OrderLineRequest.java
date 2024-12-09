@@ -16,6 +16,4 @@ public class OrderLineRequest {
     @Positive(message = "Quantity must be greater than zero")
     private int quantity;
 
-    @Positive(message = "Price must be greater than zero")
-    private double price;
 }
