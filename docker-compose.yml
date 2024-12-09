@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  accenture-challenge-java:
+    image: accenture-challenge-java
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: accenture-challenge-java
+    depends_on:
+      - prometheus
+
+  jmeter:
+    image: justb4/jmeter:5.5
+    container_name: jmeter
+    volumes:
+      - ./jmeter:/test
+    entrypoint: >
+      sh -c "rm -rf /test/results/* &&
+             jmeter -n -t /test/test-plan.jmx -l /test/results/results.jtl -e -o /test/results"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  grafana_data:
