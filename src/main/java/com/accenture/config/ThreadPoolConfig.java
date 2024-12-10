@@ -11,16 +11,16 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ThreadPoolConfig {
 
-    @Value("${executor.corePoolSize:10}")
+    @Value("${executor.corePoolSize:50}")
     private int corePoolSize;
 
-    @Value("${executor.maxPoolSize:100}")
+    @Value("${executor.maxPoolSize:500}")
     private int maxPoolSize;
 
     @Value("${executor.keepAliveTime:60}")
     private long keepAliveTime;
 
-    @Value("${executor.queueCapacity:100}")
+    @Value("${executor.queueCapacity:500}")
     private int queueCapacity;
 
     @Bean(name = "taskExecutor")
