@@ -23,8 +23,8 @@ server:
     include-stacktrace: never # No mostrara la traza de errores en json.
 
 executor:
-  corePoolSize: 10 #Tamaño mínimo del grupo de hilos
-  maxPoolSize: 100 #Tamaño máximo del grupo de hilos
+  corePoolSize: 50 #Tamaño mínimo del grupo de hilos
+  maxPoolSize: 500 #Tamaño máximo del grupo de hilos
   keepAliveTime: 60
-  queueCapacity: 1000 #Capacidad de la cola
+  queueCapacity: 500 #Capacidad de la cola
 
