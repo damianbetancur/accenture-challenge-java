@@ -10,3 +10,9 @@ management:
     metrics:
       export:
         enabled: true
+
+data:
+  customers:
+    file: data/customers.json
+  products:
+    file: data/products.json

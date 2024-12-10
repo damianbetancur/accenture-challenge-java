@@ -9,23 +9,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
 @Component
-@Profile("local")
 public class DataLoader {
 
-    @Value("${data.customers.file:src/main/resources/data/customers.json}")
+    @Value("${data.customers.file:data/customers.json}")
     private String CUSTOMER_DATA_FILE;
 
-    @Value("${data.products.file:src/main/resources/data/products.json}")
+    @Value("${data.products.file:data/products.json}")
     private String PRODUCT_DATA_FILE;
 
     private final CustomerRepository customerRepository;
@@ -44,27 +40,40 @@ public class DataLoader {
         loadProducts();
     }
 
-    private void loadCustomers() {
-        try {
-            log.info("Loading customers from {}", CUSTOMER_DATA_FILE);
-            String json = new String(Files.readAllBytes(Paths.get(CUSTOMER_DATA_FILE)));
-            List<Customer> customers = objectMapper.readValue(json, new TypeReference<>() {});
-            customers.forEach(customerRepository::save);
-            log.info("Successfully loaded {} customers.", customers.size());
-        } catch (IOException e) {
-            log.error("Failed to load customers from {}: {}", CUSTOMER_DATA_FILE, e.getMessage());
-        }
-    }
-
     private void loadProducts() {
         try {
             log.info("Loading products from {}", PRODUCT_DATA_FILE);
-            String json = new String(Files.readAllBytes(Paths.get(PRODUCT_DATA_FILE)));
-            List<Product> products = objectMapper.readValue(json, new TypeReference<>() {});
-            products.forEach(productRepository::save);
-            log.info("Successfully loaded {} products.", products.size());
+            // Usar ClassLoader para cargar desde el classpath
+            try (var inputStream = getClass().getClassLoader().getResourceAsStream(PRODUCT_DATA_FILE)) {
+                if (inputStream == null) {
+                    throw new IOException("File not found in classpath: data/products.json");
+                }
+                List<Product> products = objectMapper.readValue(inputStream, new TypeReference<>() {
+                });
+                products.forEach(productRepository::save);
+                log.info("Successfully loaded {} products.", products.size());
+            }
         } catch (IOException e) {
             log.error("Failed to load products from {}: {}", PRODUCT_DATA_FILE, e.getMessage());
+        }
+    }
+
+
+    private void loadCustomers() {
+        try {
+            log.info("Loading customers from {}", CUSTOMER_DATA_FILE);
+            // Usar ClassLoader para cargar desde el classpath
+            try (var inputStream = getClass().getClassLoader().getResourceAsStream(CUSTOMER_DATA_FILE)) {
+                if (inputStream == null) {
+                    throw new IOException("File not found in classpath: data/customers.json");
+                }
+                List<Customer> customers = objectMapper.readValue(inputStream, new TypeReference<>() {
+                });
+                customers.forEach(customerRepository::save);
+                log.info("Successfully loaded {} customers.", customers.size());
+            }
+        } catch (IOException e) {
+            log.error("Failed to load customers from {}: {}", CUSTOMER_DATA_FILE, e.getMessage());
         }
     }
 }

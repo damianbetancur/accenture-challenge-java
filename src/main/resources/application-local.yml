@@ -13,9 +13,9 @@ logging:
 
 data:
   customers:
-    file: src/main/resources/data/customers.json
+    file: data/customers.json
   products:
-    file: src/main/resources/data/products.json
+    file: data/products.json
 
 server:
   port: 8082
